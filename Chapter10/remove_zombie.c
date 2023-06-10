@@ -6,10 +6,12 @@
 
 void read_child(int sig) {
     int status;
-    pid_t id = waitpid(-1, &status, WNOHANG);
-    if (WIFEXITED(status)) {
-        printf("Removed child process %d\n", id);
-        printf("Child send %d\n", WEXITSTATUS(status));
+    pid_t id;
+    while ((id = waitpid(-1, &status, WNOHANG)) > 0) {
+        if (WIFEXITED(status)) {
+            printf("Removed child process %d\n", id);
+            printf("Child send %d\n", WEXITSTATUS(status));
+        }
     }
 }
 
